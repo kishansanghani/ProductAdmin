@@ -1,0 +1,38 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/products']">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Trash Products</li>
+    </ol>
+</nav>
+<div class="container-fluid">
+  <div class="row">
+    
+    <div class="col-md-12">
+      <div *ngIf="products.length === 0">
+        <h6 class="mt-4 text-danger">No Trash products found!</h6>
+      </div>
+      <div class="row" *ngIf="products.length > 0">
+        <div class="col-md-3 mb-3" *ngFor="let product of products">
+          
+          <div class="card">
+            <a [routerLink]="['/view', product.id]" style="text-decoration: none;">
+              <img class="card-img-top" src="{{product.productImage}}" alt="Card image cap" width="200" height="200">
+              <div class="card-body" style="min-height: 164px;">
+                <h5 class="card-title">{{product.productTitle}}</h5>
+                <p class="card-text text-truncate" style="max-width: 150px;">{{product.productDescription}}</p>
+                Location:
+                <span class="card-text" *ngFor="let location of product.location;"> 
+                  <span *ngIf="location.selected">{{location.title}} </span>
+                </span>
+              </div>
+            </a>
+            <div class="card-footer">
+              <button type="button" class="btn btn-primary" (click)="restore(product.id)">Restore</button>
+              <button type="button" class="btn btn-danger float-right" (click)="delete(product.id)">Delete</button>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  </div>
+</div>

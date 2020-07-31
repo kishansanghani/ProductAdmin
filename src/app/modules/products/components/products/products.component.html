@@ -1,0 +1,80 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/products']">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Products</li>
+    </ol>
+</nav>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+
+    </div>
+    <div class="col-md-4 mb-3 float-right">
+      <div class="input-group md-form form-sm form-2 pl-0">
+        <input class="form-control my-0 py-1 lime-border" type="text" placeholder="Search" (keyup.enter)="searchProduct()"name="search" #search="ngModel" [(ngModel)]="filter.searchText" >
+        <div class="input-group-append">
+          <button class="input-group-text lime lighten-2" id="basic-text1" (click)="searchProduct()">
+            <i class="fa fa-search text-grey" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <a [routerLink]="['/products', 'add']" class="btn btn-primary float-right">Add Product</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+        <h6 class="mt-4">Filters:</h6>
+        <div *ngFor="let category of location;">
+          <input type="checkbox" 
+          [ngModelOptions]="{standalone: true}"
+          name="location"
+          #location="ngModel"
+          id="{{category.title}}"
+          [(ngModel)]="category.selected" 
+          (ngModelChange)="locationFilter($event)"/> 
+          <label for="{{category.title}}" class="ml-2">{{category.title}}</label>
+        </div>
+        <div class="group-gap mt-3">
+					<div class="d-block">
+						<div class="custom-control custom-radio">
+							<input id="inStock" type="radio" class="custom-control-input" value="inStock" name="stockStatus" #stockStatus="ngModel" [(ngModel)]="filter.stockStatus" (ngModelChange)="filterChanged($event)">
+              <label class="custom-control-label" for="inStock">InStock</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input id="outOfStock" type="radio" class="custom-control-input" value="outOfStock" name="stockStatus" #stockStatus="ngModel" [(ngModel)]="filter.stockStatus" (ngModelChange)="filterChanged($event)">
+              <label class="custom-control-label" for="outOfStock">OutOfStock</label>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+      <div *ngIf="products.length === 0">
+        <h6 class="mt-4 text-danger">No products found!</h6>
+      </div>
+      <div class="row" *ngIf="products.length > 0">
+        <div class="col-md-4 mb-3" *ngFor="let product of products">
+          
+          <div class="card">
+            <a [routerLink]="['/view', product.id]" style="text-decoration: none;">
+              <img class="card-img-top" src="{{product.productImage}}" alt="Card image cap" width="200" height="200">
+              <div class="card-body" style="min-height: 164px;">
+                <h5 class="card-title">{{product.productTitle}}</h5>
+                <p class="card-text text-truncate" style="max-width: 150px;">{{product.productDescription}}</p>
+                Location:
+                <span class="card-text" *ngFor="let location of product.location;"> 
+                  <span *ngIf="location.selected">{{location.title}} </span>
+                </span>
+              </div>
+            </a>
+            <div class="card-footer">
+              <a [routerLink]="['/products','update', product.id]" class="btn btn-primary">Update</a>
+              <button type="button" (click)="remove(product.id)" class="btn btn-danger float-right">Remove</button>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  </div>
+</div>

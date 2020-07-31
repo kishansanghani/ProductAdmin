@@ -1,0 +1,96 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item"><a [routerLink]="['/products']">Products</a></li>
+      <li class="breadcrumb-item active">{{id}}</li>
+    </ol>
+</nav>
+<div class="container-fluid mb-5">
+    <h1 class="mt-4">{{(id) ? 'Update' : 'Add'}} product</h1>
+    <form name="form" (ngSubmit)="onSubmit(f)" #f="ngForm">
+        <div class="form-group">
+          <label for="productImage">Product Image(URL):</label>
+          <input type="text" name="productImage" class="form-control" #productImage="ngModel" [(ngModel)]="model.productImage" placeholder="Enter Product Image(URL)" [ngClass]="{ 'is-invalid': f.submitted && productImage.invalid }" required appUrlValidator>
+          <div *ngIf="f.submitted && productImage.invalid" class="invalid-feedback">
+            <div *ngIf="productImage.errors?.required">Product Image is required</div>
+            <div *ngIf="productImage.errors?.validUrl">Please provide a valid url with Http or Https.</div>
+            <div *ngIf="productImage.errors?.validExtensionUrl">Only jpg,png,jpeg allowed.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+            <label for="productTitle">Product Title</label>
+            <input type="text" name="productTitle" class="form-control" #productTitle="ngModel" [(ngModel)]="model.productTitle" placeholder="Enter Product Title" [ngClass]="{ 'is-invalid': f.submitted && productTitle.invalid }" required maxlength="50">
+            <div *ngIf="f.submitted && productTitle.invalid" class="invalid-feedback">
+              <div *ngIf="productTitle.errors.required">Product Title is required</div>
+              <div *ngIf="productTitle.errors?.maxlength">Maximum character to be allowed 50</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+          <label for="productDescription">Product Description</label>
+          <textarea name="productDescription" class="form-control" #productDescription="ngModel" [(ngModel)]="model.productDescription" placeholder="Enter Product Description" [ngClass]="{ 'is-invalid': f.submitted && productDescription.invalid }" required maxlength="150">
+          </textarea>
+          <div *ngIf="f.submitted && productDescription.invalid" class="invalid-feedback">
+            <div *ngIf="productDescription.errors.required">Product Description is required</div>
+            <div *ngIf="productDescription.errors?.maxlength">Maximum character to be allowed 150</div>
+          </div>
+        </div>
+
+        <div class="group-gap">
+          <label for="ProductStock">Product stock</label>
+					<div class="d-block">
+
+						<div class="custom-control custom-radio">
+							<input id="inStock" type="radio" class="custom-control-input" value="inStock" name="stockStatus" #stockStatus="ngModel" [(ngModel)]="model.stockStatus" required>
+              <label class="custom-control-label" for="inStock">InStock</label>
+            </div>
+
+            <div class="custom-control custom-radio">
+              <input id="outOfStock" type="radio" class="custom-control-input" value="outOfStock" name="stockStatus" #stockStatus="ngModel" [(ngModel)]="model.stockStatus" required>
+              <label class="custom-control-label" for="outOfStock">OutOfStock</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group mt-2">
+          <label for="productPrice">Product Price</label>
+          <input type="number" name="productPrice" class="form-control" #productPrice="ngModel" [(ngModel)]="model.productPrice" placeholder="Enter Price" [ngClass]="{ 'is-invalid': f.submitted && productPrice.invalid }" required >
+          <div *ngIf="f.submitted && productPrice.invalid" class="invalid-feedback">
+            <div *ngIf="productPrice.errors.required">productPrice is required</div>
+          </div>
+        </div>
+
+        <div class="form-group mt-2">
+          <label for="productRating">Product Rating</label>
+          <select name="productRating" name="productRating" class="form-control" #productRating="ngModel" [(ngModel)]="model.productRating" placeholder="Enter Price" [ngClass]="{ 'is-invalid': f.submitted && productRating.invalid }" required>
+            <option value="0">0</option>
+            <option value='1'>1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <div *ngIf="f.submitted && productRating.invalid" class="invalid-feedback">
+            <div *ngIf="productRating.errors.required">productRating is required</div>
+          </div>
+        </div>
+
+        <div class="form-group mt-2">
+          <label for="productPrice">Location</label>
+          <div class="d-block">
+            <div *ngFor="let category of model.location;">
+              <input type="checkbox" 
+              [ngModelOptions]="{standalone: true}"
+              name="location"
+              id="{{category.title}}"
+              #location="ngModel"
+              [(ngModel)]="category.selected" [ngClass]="{ 'is-invalid': f.submitted && location.invalid }" required/> 
+              <label for="{{category.title}}" class="ml-2 cursor-pointer">{{category.title}}</label>
+            </div>
+          </div>
+        </div>
+        
+        <button class="btn btn-primary">Submit</button>
+    </form>
+</div>

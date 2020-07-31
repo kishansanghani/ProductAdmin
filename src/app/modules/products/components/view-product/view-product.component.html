@@ -1,0 +1,75 @@
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li>
+        <button class="btn btn-secondary btn-sm mr-2" (click)="back();"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+      </li>
+      <li class="breadcrumb-item"><a [routerLink]="['/products']">Home</a></li>
+      <li class="breadcrumb-item"><a [routerLink]="['/products']">Products</a></li>
+      <li class="breadcrumb-item active">{{model.id}}</li>
+    </ol>
+</nav>
+<div class="container-fluid">
+    <br>
+<div class="card border-0 mb-5">
+	<div class="row">
+        <aside class="col-sm-4">
+            <article class="gallery-wrap"> 
+            <div class="img-big-wrap">
+                <div style="width: 400px; height: 400px;">
+                    <!-- <img src="{{model.productImage}}" width="400" height="400"> -->
+                    <ngx-image-zoom
+                    [thumbImage]=model.productImage
+                    [fullImage]=model.productImage
+                    [magnification]="1"
+                    [enableLens]="true"
+                    [lensWidth]="200"
+                    [zoomMode]="hover"
+                ></ngx-image-zoom>
+                </div>
+            </div>
+            </article>
+		</aside>
+		<aside class="col-sm-5">
+            <article class="card-body m-0 pt-0 pl-5">
+                <h3 class="title text-uppercase">{{model.productTitle}}</h3>
+            <div class="rating">
+                <div class="stars" >
+                    <span class="fa fa-star" *ngFor="let star of createRange(model.productRating)"></span>
+                </div>
+            </div>
+            <div class="mb-3 mt-3"> 
+                <span class="h7 text-success" [ngClass]="{'text-danger': model.stockStatus === 'outOfStock'}" >{{model.stockStatus}}</span>
+            </div>						
+            <div class="mb-3 mt-3"> 
+                <span class="price-title">Price :</span>
+                <span class="price color-price-waanbii">
+                    {{model.productPrice | currency:'EUR'}}
+                </span>
+            </div>
+            <dl class="item-property">
+                <dt>Description</dt>
+                <dd>
+                    <p>
+                        {{model.productDescription}}
+                    </p>
+                </dd>
+            </dl>
+            <dl class="param param-feature">
+                <dt>Locations</dt>
+                <dd>
+                    <span class="card-text" *ngFor="let location of model.location;"> 
+                        <span *ngIf="location.selected">{{location.title}} </span>
+                    </span>
+                </dd>
+            </dl>
+            </article>
+		</aside>
+		<aside class="col-sm-3">
+		    
+		</aside>
+	</div>
+</div>
+
+
+</div>
